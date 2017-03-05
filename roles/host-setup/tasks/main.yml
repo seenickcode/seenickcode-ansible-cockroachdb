@@ -1,0 +1,22 @@
+---
+# tasks file for host-setup
+- name: Generate /etc/hosts
+  template: src=etc-hosts.j2 dest=/etc/hosts backup=false
+  tags: etc_hosts
+
+- name: Install ntp
+  raw: apt -y update && apt install -y ntp
+  tags: ntp
+
+- name: Install ntpdate
+  raw: apt -y update && apt install -y ntpdate
+  tags: ntp
+
+- name: Make sure ntp is running
+  service: name=ntp state=running
+  tags: ntp
+
+- name: Sync clocks
+  shell: "ntpdate -u 0.rhel.pool.ntp.org"
+  when: sync_clocks
+  tags: ntp

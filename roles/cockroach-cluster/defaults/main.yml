@@ -1,0 +1,8 @@
+---
+# defaults file for cockroach-cluster
+
+cluster_master: "{{ hostvars[play_hosts[0]]['private_ip'] }}"
+private_ip: "{{ private_ip }}"
+stop_cluster: False
+check_status: False
+reinstall_cluster: False

@@ -1,0 +1,32 @@
+---
+# tasks file for cockroach-cluster
+- name: Stop cluster
+  cockroach_cluster: path={{ install_location }}/{{ install_version }} host={{ private_ip }} state=stopped
+  when: stop_cluster
+  tags: stop_cluster,restart_cluster
+
+- name: Waiting for port to be released
+  wait_for: port={{ cockroach_port }} state=stopped
+  when: stop_cluster
+  tags: stop_cluster,restart_cluster
+
+- name: Start master node
+  cockroach_cluster: path={{ install_location }}/{{ install_version }} host={{ private_ip }} state=started
+  when: private_ip == cluster_master
+  tags: start_cluster,restart_cluster
+
+- name: Start other nodes
+  cockroach_cluster: path={{ install_location }}/{{ install_version }} host={{ private_ip }} join=True cluster_master={{ cluster_master }} state=started
+  when: private_ip != cluster_master
+  tags: join_cluster,start_cluster,restart_cluster
+
+- name: Check status
+  shell: "{{ install_location }}/{{ install_version }}/cockroach node host={{ private_ip }} status"
+  register: status
+  when: check_status
+  tags: join_cluster,start_cluster,status
+
+- name: Check status
+  debug: var=status.stdout_lines
+  when: check_status
+  tags: join_cluster,start_cluster,status

@@ -1,0 +1,7 @@
+[cockroach-nodes]
+cdb-01 private_ip=YOUR_PRIVATE_AWS_IP1 ansible_host=YOUR_PUBLIC_AWS_IP1 ansible_user=ubuntu ansible_private_key_file=PATH_TO_YOUR_AWS_PEM_KEY_FILE
+cdb-02 private_ip=YOUR_PRIVATE_AWS_IP2 ansible_host=YOUR_PUBLIC_AWS_IP1 ansible_user=ubuntu ansible_private_key_file=PATH_TO_YOUR_AWS_PEM_KEY_FILE
+cdb-03 private_ip=YOUR_PRIVATE_AWS_IP3 ansible_host=YOUR_PUBLIC_AWS_IP1 ansible_user=ubuntu ansible_private_key_file=PATH_TO_YOUR_AWS_PEM_KEY_FILE
+
+[cockroach-nodes:vars]
+ansible_python_interpreter=/usr/bin/python3

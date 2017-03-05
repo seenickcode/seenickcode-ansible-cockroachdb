@@ -1,0 +1,8 @@
+---
+# tasks file for cockroach-db
+
+- name: Create databases
+  cockroach_db: name={{ item }} path={{ install_location }}/{{ install_version }} host={{ private_ip }} state=present
+  with_items: "{{ databases }}"
+  when: private_ip == cluster_master and databases is defined
+  tags: create_db
